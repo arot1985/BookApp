@@ -23,6 +23,9 @@
       const ratingBgc = determineRatingBgc(book.rating);
       const ratingWidth = book.rating*10; 
 
+      book.ratingBgc = ratingBgc;
+      book.ratingWidth = ratingWidth;
+
       /*generate HTML based on template*/
       const generatedHTML = templates.bookTemplate(book);
   
@@ -33,11 +36,7 @@
       const bookListContainer = document.querySelector(select.containerOf.bookList);
       /*add element to book-list*/
       bookListContainer.appendChild(element);
-
-      book.ratingBgc = ratingBgc;
-      book.ratingWidth = ratingWidth;
     }
-    
   }
 
   /*function initActions() {
