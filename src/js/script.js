@@ -14,9 +14,14 @@
     bookTemplate: Handlebars.compile(document.querySelector(select.templateOf.bookTemplate).innerHTML),
   };
 
+
+
   function render (){
 
     for(let book of dataSource.books) {
+
+      const ratingBgc = determineRatingBgc(book.rating);
+      const ratingWidth = book.rating*10; 
 
       /*generate HTML based on template*/
       const generatedHTML = templates.bookTemplate(book);
@@ -28,7 +33,11 @@
       const bookListContainer = document.querySelector(select.containerOf.bookList);
       /*add element to book-list*/
       bookListContainer.appendChild(element);
+
+      book.ratingBgc = ratingBgc;
+      book.ratingWidth = ratingWidth;
     }
+    
   }
 
   /*function initActions() {
@@ -77,18 +86,16 @@
 
     });
 
-    const form = document.querySelector('filters'); /*?????*/
+    const form = document.querySelector('.filters'); 
 
-    form.addEventListener('click', function(event){
-      event.preventDefault();
-
+    form.addEventListener('click', function (event){
       if(event.target.tagName == 'INPUT' && event.target.type == 'checkbox' && event.target.name == 'filter'){
-        console.log('value:', event.target.value); /* ????*/
-        if(event.target.checked){ /*czy ma być checked == true? */
-        filters.push(event.target.value);
+        console.log('value:', event.target.value); 
+        if(event.target.checked){ 
+          filters.push(event.target.value);
         } else {
-        const indexOfFilters = filters.indexOf(event.target.value);
-        filters.splice(indexOfFilters, 1);
+          const indexOfFilters = filters.indexOf(event.target.value);
+          filters.splice(indexOfFilters, 1);
         }
       }
 
@@ -107,19 +114,36 @@
           break;
         }
       }
-    }
 
-    if(shouldBeHidden == true){
-      const bookImage = document.querySelectorAll('book__image[data-id="id"]'); /*??????????*/ 
-      bookImage.classList.add('hidden');
-    } else {
+      const bookImage = document.querySelector('.book__image[data-id="' + book.id + '"]'); 
+      if(shouldBeHidden == true){
+        bookImage.classList.add('hidden');
+      } else {
         bookImage.classList.remove('hidden');
-    }
+      }
+    } 
+  }
 
+  
+  function determineRatingBgc(rating) {
+    let background = '';
+
+    if (rating < 6) {
+      background = 'linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%)';
+    } else if (rating > 6 && rating <= 8) {
+      background = 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%);';
+    } else if (rating > 8 && rating <= 9) {
+      background = 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%)';
+    } else if (rating > 9) {
+      background = 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%)';
+    }
+    return background;
   }
   
   render ();
   initActions();
+  
+
 
   
 
